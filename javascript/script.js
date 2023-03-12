@@ -37,7 +37,9 @@ function playOnClick(event) {
     console.log(winner);
     stats.innerHTML = "";
     stats.innerHTML = winner + " WON!!!!";
-    document.body.style.backgroundColor = "";
+    document.body.style.backgroundImage = "url('images/fireworks.gif')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.filter = "invert(100%)";
     for (let tile of tiles) {
       tile.removeEventListener("click", playOnClick);
     }
