@@ -1,4 +1,5 @@
 var stats = document.getElementsByClassName("status")[1];
+
 // Initialize board state as an array of empty strings
 let boardState = ["", "", "", "", "", "", "", "", ""];
 var player;
@@ -26,14 +27,17 @@ function playOnClick(event) {
   } else {
     player = "X";
   }
-
-  stats.innerHTML = stats.innerHTML + " " + player + "'s turn";
+  stats.innerHTML = "";
+  stats.innerHTML = player + "'s turn";
 
   // Check for win or tie
   // ...
   const winner = checkWin(boardState);
   if (winner !== null) {
     console.log(winner);
+    stats.innerHTML = "";
+    stats.innerHTML = winner + " WON!!!!";
+    document.body.style.backgroundColor = "";
     for (let tile of tiles) {
       tile.removeEventListener("click", playOnClick);
     }
