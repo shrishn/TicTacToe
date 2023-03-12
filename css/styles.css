@@ -39,4 +39,15 @@
 .tile {
   aspect-ratio: 1/1;
   padding: 0rem;
+  text
+}
+
+#undo{
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.4rem;
+}
+
+#reset{
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.4rem;
 }
