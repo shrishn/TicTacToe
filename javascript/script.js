@@ -40,7 +40,7 @@ function playOnClick(event) {
     stats.innerHTML = winner + " WON!!!!";
     document.body.style.backgroundImage = "url('images/fireworks.gif')";
     document.body.style.backgroundSize = "cover";
-    
+
     for (let tile of tiles) {
       tile.removeEventListener("click", playOnClick);
       undoButton.style.display = "none";
