@@ -1,0 +1,42 @@
+* {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+}
+.title {
+  font-family: "Permanent Marker", cursive;
+  font-size: 3.4rem;
+}
+.status {
+  font-family: "Permanent Marker", cursive;
+  font-size: 2.4rem;
+}
+.board {
+  max-width: 400px;
+  min-width: 250px;
+  width: 100%;
+  font-family: "Permanent Marker", cursive;
+  font-size: 5rem;
+}
+@media (max-width: 320px) {
+  .title {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 331px) and (max-width: 900px) {
+  .title {
+    font-size: 3.5rem;
+  }
+}
+
+@media (min-width: 901px) {
+  .title {
+    font-size: 4rem;
+  }
+}
+
+.tile {
+  aspect-ratio: 1/1;
+  padding: 0rem;
+}
