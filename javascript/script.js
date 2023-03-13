@@ -40,6 +40,7 @@ function playOnClick(event) {
     stats.innerHTML = winner + " WON!!!!";
     document.body.style.backgroundImage = "url('images/fireworks.gif')";
     document.body.style.backgroundSize = "cover";
+    document.body.style.filter = "invert(100%)";
 
     for (let tile of tiles) {
       tile.removeEventListener("click", playOnClick);
@@ -79,9 +80,9 @@ function checkWin(board) {
   for (let i = 0; i < winningPositions.length; i++) {
     const [a, b, c] = winningPositions[i];
     if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-      tiles[a].style.backgroundColor = "#30cf7f";
-      tiles[b].style.backgroundColor = "#30cf7f";
-      tiles[c].style.backgroundColor = "#30cf7f";
+      tiles[a].style.backgroundColor = "#cf3080";
+      tiles[b].style.backgroundColor = "#cf3080";
+      tiles[c].style.backgroundColor = "#cf3080";
       return board[a];
     }
   }
