@@ -80,9 +80,9 @@ function checkWin(board) {
   for (let i = 0; i < winningPositions.length; i++) {
     const [a, b, c] = winningPositions[i];
     if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-      tiles[a].style.backgroundColor = "#cf3080";
-      tiles[b].style.backgroundColor = "#cf3080";
-      tiles[c].style.backgroundColor = "#cf3080";
+      tiles[a].style.backgroundColor = "#e17daf";
+      tiles[b].style.backgroundColor = "#e17daf";
+      tiles[c].style.backgroundColor = "#e17daf";
       return board[a];
     }
   }
