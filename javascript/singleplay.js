@@ -1,118 +1,102 @@
-// constants for player symbols
-const PLAYER_X = "X";
-const PLAYER_O = "O";
+// Variables
+const player_x = "X";
+const aiplayer = "O";
+let board_state = ["", "", "", "", "", "", "", "", ""];
+const winstate = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+const tile = document.getElementsByClassName("tile");
+start();
+//Functions
 
-// initialize game state
-let gameBoard = ["", "", "", "", "", "", "", "", ""];
-let currentPlayer = PLAYER_X;
-let gameOver = false;
-
-// DOM elements
-const tiles = document.querySelectorAll(".tile");
-const statusText = document.querySelector(".status div");
-const undoButton = document.querySelector("#undo");
-const resetButton = document.querySelector("#reset");
-
-// helper function to update status text
-function setStatusText(text) {
-  statusText.innerText = text;
+// main function
+function start() {
+  console.log("Gamestarted");
+  board_state = ["", "", "", "", "", "", "", "", ""];
+  for (let i = 0; i < tile.length; i++) {
+    tile[i].innerHTML = "";
+    tile[i].style.color = "black";
+    tile[i].style.removeProperty("background-color");
+    tile[i].setAttribute("id", i);
+    tile[i].addEventListener("click", tileclick);
+  }
 }
 
-// helper function to update board state
-function updateBoard(index) {
-  gameBoard[index] = currentPlayer;
-  tiles[index].innerText = currentPlayer;
-}
-
-// helper function to check for win or draw
-function checkWin() {
-  // check rows
-  for (let i = 0; i < 9; i += 3) {
+// function to check winner
+function checkwin(board_state) {
+  for (let i = 0; i < winstate.length; i++) {
+    const [a, b, c] = winstate[i];
     if (
-      gameBoard[i] !== "" &&
-      gameBoard[i] === gameBoard[i + 1] &&
-      gameBoard[i] === gameBoard[i + 2]
+      board_state[a] !== "" &&
+      board_state[a] === board_state[b] &&
+      board_state[c] === board_state[b]
     ) {
-      return true;
+      tile[a].style.color = "#FCFFE7";
+      tile[b].style.color = "#FCFFE7";
+      tile[c].style.color = "#FCFFE7";
+      if (board_state[a] === "O") {
+        tile[a].style.backgroundColor = "#EB455F";
+        tile[b].style.backgroundColor = "#EB455F";
+        tile[c].style.backgroundColor = "#EB455F";
+      } else {
+        tile[a].style.backgroundColor = "#2B3467";
+        tile[b].style.backgroundColor = "#2B3467";
+        tile[c].style.backgroundColor = "#2B3467";
+      }
+
+      return board_state[a];
     }
   }
-  // check columns
-  for (let i = 0; i < 3; i++) {
-    if (
-      gameBoard[i] !== "" &&
-      gameBoard[i] === gameBoard[i + 3] &&
-      gameBoard[i] === gameBoard[i + 6]
-    ) {
-      return true;
+  return null;
+}
+
+// to check whether the board is in tie state
+function checktie(board_state) {
+  for (let i = 0; i < board_state.length; i++) {
+    if (board_state[i] === "") {
+      return false;
     }
   }
-  // check diagonals
-  if (
-    gameBoard[0] !== "" &&
-    gameBoard[0] === gameBoard[4] &&
-    gameBoard[0] === gameBoard[8]
-  ) {
-    return true;
-  }
-  if (
-    gameBoard[2] !== "" &&
-    gameBoard[2] === gameBoard[4] &&
-    gameBoard[2] === gameBoard[6]
-  ) {
-    return true;
-  }
-  // check for draw
-  if (!gameBoard.includes("")) {
-    setStatusText("Draw!");
-    gameOver = true;
-  }
-  return false;
+  return true;
 }
 
-// handle tile click event
-function handleTileClick(index) {
-  if (gameBoard[index] !== "" || gameOver) {
+function tileclick(event) {
+  if (board_state[event.target.id] == "") {
+    turn(Number(event.target.id), player_x);
+    if (!checktie(board_state)) turn(optspot(), aiplayer);
+  }
+}
+function turn(tileid, player) {
+  if (board_state[tileid] !== "") {
     return;
   }
-  updateBoard(index);
-  if (checkWin()) {
-    setStatusText(`${currentPlayer} wins!`);
-    gameOver = true;
-  } else {
-    currentPlayer = currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
-    setStatusText(`Player ${currentPlayer}`);
+  board_state[tileid] = player;
+  document.getElementById(tileid).innerHTML = player;
+  let gamecheck = checkwin(board_state);
+  if (gamecheck === "X" || gamecheck === "O") gameover(gamecheck);
+}
+function gameover(gamecheck) {
+  console.log(gamecheck);
+
+  for (let i = 0; i < tile.length; i++) {
+    tile[i].removeEventListener("click", tileclick);
   }
 }
-
-// handle undo button click event
-function handleUndoClick() {
-  if (gameOver) {
-    return;
+function emptytiles() {
+  let num = [];
+  for (let i = 0; i < board_state.length; i++) {
+    if (board_state[i] === "") num.push(i);
   }
-  let lastMove = gameBoard.lastIndexOf(currentPlayer);
-  if (lastMove !== -1) {
-    gameBoard[lastMove] = "";
-    tiles[lastMove].innerText = "";
-    currentPlayer = currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
-    setStatusText(`Player ${currentPlayer}`);
-  }
+  return num;
 }
-
-// handle reset button click event
-function handleResetClick() {
-  gameBoard = ["", "", "", "", "", "", "", "", ""];
-  tiles.forEach((tile) => (tile.innerText = ""));
-  currentPlayer = PLAYER_X;
-  gameOver = false;
-  setStatusText(`Player ${currentPlayer}`);
+function optspot() {
+  console.log("ai");
+  return emptytiles()[0];
 }
-
-// add event listeners
-tiles.forEach((tile, index) =>
-  tile.addEventListener("click", () => handleTileClick(index))
-);
-undoButton.addEventListener("click", handleUndoClick);
-resetButton.addEventListener("click", handleResetClick);
-
-// initialize status text
-setStatusText(`Player ${currentPlayer}`);

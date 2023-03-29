@@ -61,7 +61,7 @@ function playOnClick(event) {
 // Attach click event listeners to all tiles
 const tiles = document.getElementsByClassName("tile");
 for (let i = 0; i < tiles.length; i++) {
-  tiles[i].setAttribute("data-index", i);
+  tiles[i].setAttribute("id", i);
   tiles[i].addEventListener("click", playOnClick);
 }
 
